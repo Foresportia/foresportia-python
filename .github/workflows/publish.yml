@@ -19,13 +19,25 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.12"
 
       - name: Install build backend
-        run: python -m pip install --upgrade pip build
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ".[dev]"
+
+      - name: Check release tag matches package version
+        run: |
+          python -c 'import os; from foresportia import __version__; assert os.environ["GITHUB_REF_NAME"] == "v" + __version__, "Tag/package version mismatch"'
+
+      - name: Run SDK tests
+        run: python -m pytest -q
 
       - name: Build package
         run: python -m build
+
+      - name: Validate distribution metadata
+        run: python -m twine check dist/*
 
       - name: Store distribution packages
         uses: actions/upload-artifact@v4

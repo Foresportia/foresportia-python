@@ -182,6 +182,7 @@ class ForesportiaClient:
         days: Optional[int] = 14,
         limit: int = 200,
         cursor: Optional[str] = None,
+        include_unreliable: bool = False,
         etag: Optional[str] = None,
     ) -> ApiResponse[list[MatchSummary]]:
         """List matches for a competition over a date window.
@@ -205,6 +206,8 @@ class ForesportiaClient:
         if not code:
             raise ForesportiaValidationError("league_code must be a non-empty string.")
         params: dict[str, Any] = {"include": include, "limit": limit}
+        if include_unreliable:
+            params["include_unreliable"] = "true"
         if days is not None:
             params["days"] = days
         start_str = _as_date_str(start)
@@ -231,6 +234,7 @@ class ForesportiaClient:
         cursor: Optional[str] = None,
         max_pages: Optional[int] = None,
         max_matches: Optional[int] = None,
+        include_unreliable: bool = False,
     ) -> Iterator[MatchSummary]:
         """Iterate lazily over deterministic league-match pages.
 
@@ -256,6 +260,7 @@ class ForesportiaClient:
                 days=days,
                 limit=limit,
                 cursor=next_cursor,
+                include_unreliable=include_unreliable,
             )
             pages += 1
             for match in page.data or []:
@@ -283,6 +288,7 @@ class ForesportiaClient:
         limit: int = 200,
         cursor: Optional[str] = None,
         etag: Optional[str] = None,
+        include_unreliable: bool = False,
     ) -> ApiResponse[list[MatchSummary]]:
         """List past matches for a competition (``include="past"``).
 
@@ -323,6 +329,7 @@ class ForesportiaClient:
             limit=limit,
             cursor=cursor,
             etag=etag,
+            include_unreliable=include_unreliable,
         )
 
     def iter_league_history(
@@ -335,6 +342,7 @@ class ForesportiaClient:
         cursor: Optional[str] = None,
         max_pages: Optional[int] = None,
         max_matches: Optional[int] = None,
+        include_unreliable: bool = False,
     ) -> Iterator[MatchSummary]:
         """Iterate lazily over past matches for a competition (``include="past"``).
 
@@ -360,6 +368,7 @@ class ForesportiaClient:
             cursor=cursor,
             max_pages=max_pages,
             max_matches=max_matches,
+            include_unreliable=include_unreliable,
         )
 
     def get_match(
@@ -367,6 +376,7 @@ class ForesportiaClient:
         match_id: str,
         *,
         include: Optional[str] = None,
+        include_unreliable: bool = False,
         etag: Optional[str] = None,
     ) -> ApiResponse[MatchDetail]:
         """Fetch the full payload for one match.
@@ -386,6 +396,8 @@ class ForesportiaClient:
         if not identifier:
             raise ForesportiaValidationError("match_id must be a non-empty string.")
         params = {"include": include} if include is not None else None
+        if include_unreliable:
+            params = {**(params or {}), "include_unreliable": "true"}
         return self._request_typed(
             "GET",
             f"/v1/matches/{identifier}",
@@ -399,6 +411,7 @@ class ForesportiaClient:
         match_ids: list[str],
         *,
         etag: Optional[str] = None,
+        include_unreliable: bool = False,
     ) -> ApiResponse[BulkResult]:
         """Fetch matches in bulk (Developer: 5; Starter: 100).
 
@@ -415,12 +428,13 @@ class ForesportiaClient:
         return self._request_typed(
             "POST",
             "/v1/matches/bulk",
+            params={"include_unreliable": "true"} if include_unreliable else None,
             json_body={"match_ids": list(match_ids)},
             etag=etag,
             parse=BulkResult.from_dict,
         )
 
-    def list_today_matches(self, *, etag: Optional[str] = None) -> ApiResponse[list[MatchSummary]]:
+    def list_today_matches(self, *, etag: Optional[str] = None, include_unreliable: bool = False) -> ApiResponse[list[MatchSummary]]:
         """List today's matches across the competitions available to the key.
 
         ``GET /v1/matches/today``
@@ -429,6 +443,7 @@ class ForesportiaClient:
         return self._request_typed(
             "GET",
             "/v1/matches/today",
+            params={"include_unreliable": "true"} if include_unreliable else None,
             etag=etag,
             parse=_parse_match_summaries,
         )
@@ -437,6 +452,7 @@ class ForesportiaClient:
         self,
         *,
         limit: int = 20,
+        include_unreliable: bool = False,
         etag: Optional[str] = None,
     ) -> ApiResponse[list[MatchSummary]]:
         """List today's highest-confidence picks (1..100).
@@ -447,7 +463,7 @@ class ForesportiaClient:
         return self._request_typed(
             "GET",
             "/v1/picks/today",
-            params={"limit": limit},
+            params={"limit": limit, **({"include_unreliable": "true"} if include_unreliable else {})},
             etag=etag,
             parse=_parse_match_summaries,
         )
@@ -632,9 +648,10 @@ class ForesportiaClient:
                 continue
             if (
                 response.status_code == 429
+                and retryable
+                and not last_attempt
                 and self.retry_on_rate_limit
                 and self.max_retries > 0
-                and attempt < self.max_retries
             ):
                 retry_after = Quota.from_headers(response.headers).retry_after
                 delay = min(

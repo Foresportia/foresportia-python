@@ -358,6 +358,27 @@ guaranteed outcomes, or instructions to place wagers. Any use of Foresportia
 data is the responsibility of the user and should comply with applicable laws,
 regulations, and platform policies.
 
+## Starter prediction reliability (since 0.3.2)
+
+Use SDK `0.3.2` or later and a Starter key with an API deployment supporting
+`include_unreliable`. Upgrade with `python -m pip install --upgrade foresportia`.
+
+Typed match methods accept `include_unreliable=True` to explicitly request complete,
+verified calculations rejected for identified sporting quality reasons. By default the
+API still returns reliable predictions only. This does not extend the match horizon.
+
+```python
+response = client.list_league_matches("LIGUE_1", include_unreliable=True)
+for match in response.data or []:
+    print(match.id, match.reliability, match.reliability_context)
+```
+
+Reason codes: `elo_unreliable`, `shadow_insufficient_data`, `sparse_goal_context`,
+`elo_missing`, `goal_raw_data_unreliable`, `uefa_qualification_mute`.
+These flags are not a probability of correctness. Invalid calculations and
+unknown rejection reasons remain excluded; the original probabilities are unchanged.
+No translated message is returned. Keep the option unchanged when paginating.
+
 ## License
 
 MIT. See

@@ -100,6 +100,8 @@ class MatchSummary:
     result_score: Optional[str] = None
     pick: Optional[dict[str, Any]] = None
     availability: Optional[dict[str, Any]] = None
+    reliability: Optional[bool] = None
+    reliability_context: list[str] = field(default_factory=list)
     raw: dict[str, Any] = field(default_factory=dict, repr=False)
 
     @classmethod
@@ -119,6 +121,8 @@ class MatchSummary:
             context=data.get("context"),
             status=data.get("status"),
             result_score=data.get("result_score"),
+            reliability=data.get("reliability"),
+            reliability_context=data.get("reliability_context") or [],
             pick=data.get("pick"),
             availability=(
                 data.get("availability") if isinstance(data.get("availability"), dict) else None
@@ -206,6 +210,14 @@ class MatchDetail:
     @property
     def probabilities(self) -> Optional[dict[str, Any]]:
         return self.raw.get("probabilities")
+
+    @property
+    def reliability(self) -> Optional[bool]:
+        return self.raw.get("reliability")
+
+    @property
+    def reliability_context(self) -> list[str]:
+        return self.raw.get("reliability_context") or []
 
     @property
     def forecast(self) -> Optional[dict[str, Any]]:

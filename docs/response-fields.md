@@ -1,5 +1,15 @@
 # Response Fields
 
+## Starter reliability (since 0.3.2)
+
+Requires SDK `0.3.2` or later and an API deployment supporting `include_unreliable`.
+
+Match summaries and details expose `reliability: bool | None` and
+`reliability_context: list[str]`. Missing metadata on older APIs remains `None`,
+not an inferred quality guarantee. Explicit `include_unreliable=True` is supported
+by typed match, history, bulk and pick methods; default requests are unchanged.
+The context codes are language-independent. See the README for the exhaustive list.
+
 Since version 0.2.0 the typed methods (`list_leagues`, `list_league_matches`,
 `get_match`, `get_matches_bulk`, `list_today_matches`, `list_today_picks`)
 return an `ApiResponse` whose `data` holds lightweight typed models. The

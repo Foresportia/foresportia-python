@@ -1,5 +1,11 @@
 # Plans and Limitations
 
+Since SDK `0.3.2`, `include_unreliable=True` is Starter-only and requires an
+API deployment supporting this option. It does not
+extend horizons, competition access or quotas. Developer receives
+`403 unreliable_predictions_require_starter` if it requests this opt-in.
+The bulk option is a query parameter; the JSON body remains `match_ids` only.
+
 Developer and Starter are active public API plans. They use the same `/v1`
 endpoints, `X-API-Key` authentication, match IDs, SDK models, pagination, and
 error handling. Upgrading to Starter does not require rewriting an integration.

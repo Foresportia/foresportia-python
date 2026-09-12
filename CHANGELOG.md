@@ -3,6 +3,17 @@
 All notable changes to the Foresportia Python SDK will be documented in this
 file.
 
+## 0.3.2 - 2026-09-12
+
+- Fixed bulk POST HTTP 429 handling with opt-in retries: POST is never retried
+  and returns the typed rate-limit error instead of an internal assertion.
+
+- Starter opt-in `include_unreliable=True` on typed match, history, bulk and pick methods.
+- `MatchSummary` and `MatchDetail` expose `reliability` and language-independent
+  `reliability_context`. The server still excludes invalid/incomplete calculations.
+- Default queries are unchanged. The reliability opt-in requires a Starter key
+  and an API deployment supporting include_unreliable.
+
 ## 0.3.1 - 2026-07-23
 
 ### Added

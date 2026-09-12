@@ -59,7 +59,10 @@ def _client(**kwargs):
 
 
 def test_package_version_is_031():
-    assert __version__ == "0.3.1"
+    from pathlib import Path
+    import re
+    metadata = (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8")
+    assert __version__ == re.search(r'^version = "([^"]+)"', metadata, re.MULTILINE).group(1)
 
 
 # --------------------------------------------------------------------- #
@@ -700,6 +703,18 @@ def test_401_never_retried():
     with ForesportiaClient(API_KEY, max_retries=3) as client:
         with pytest.raises(ForesportiaAuthenticationError):
             client.list_leagues()
+    assert route.call_count == 1
+
+
+@respx.mock
+def test_bulk_429_is_never_retried_even_with_rate_limit_retry_enabled(monkeypatch):
+    monkeypatch.setattr("foresportia.client.time.sleep",
+                        lambda _s: (_ for _ in ()).throw(AssertionError("POST must not sleep/retry")))
+    route = respx.post(f"{BASE_URL}/v1/matches/bulk").mock(
+        return_value=Response(429, json={"detail": "rate_limit_exceeded"}, headers={"Retry-After": "1"}))
+    with ForesportiaClient(API_KEY, max_retries=2, retry_on_rate_limit=True) as client:
+        with pytest.raises(ForesportiaRateLimitError):
+            client.get_matches_bulk([HEX_ID_1])
     assert route.call_count == 1
 
 
