@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "foresportia"
-version = "0.3.3"
+dynamic = ["version"]
 description = "Official Python SDK for the Foresportia API"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -52,6 +52,9 @@ Issues = "https://github.com/foresportia/foresportia-python/issues"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["foresportia*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "foresportia._version.__version__"}
 
 [tool.setuptools.package-data]
 foresportia = ["py.typed"]

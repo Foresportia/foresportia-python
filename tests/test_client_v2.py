@@ -58,11 +58,10 @@ def _client(**kwargs):
     return ForesportiaClient(API_KEY, **kwargs)
 
 
-def test_package_version_is_031():
-    from pathlib import Path
-    import re
-    metadata = (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8")
-    assert __version__ == re.search(r'^version = "([^"]+)"', metadata, re.MULTILINE).group(1)
+def test_package_version_comes_from_single_source():
+    from importlib.metadata import version
+
+    assert version("foresportia") == __version__
 
 
 # --------------------------------------------------------------------- #

@@ -3,6 +3,12 @@
 All notable changes to the Foresportia Python SDK will be documented in this
 file.
 
+## 0.3.4 - 2026-09-19
+
+- Fixed the release versioning process: package metadata now derives from the
+  same version as the Python package.
+- Updated repository links after the move to the Foresportia organization.
+
 ## 0.3.3 - 2026-09-19
 
 - Change repo property

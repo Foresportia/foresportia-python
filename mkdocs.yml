@@ -1,7 +1,7 @@
 site_name: Foresportia Python SDK
 site_description: Python SDK for the Foresportia football forecasting API
 site_url: https://qbarbedienne.github.io/foresportia-python/
-repo_url: https://github.com/QBarbedienne/foresportia-python
+repo_url: https://github.com/Foresportia/foresportia-python
 
 theme:
   name: material

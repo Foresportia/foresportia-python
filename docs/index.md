@@ -16,7 +16,7 @@ score feed.
 - [Foresportia website](https://www.foresportia.com/en) ([FR](https://www.foresportia.com/), [ES](https://www.foresportia.com/es))
 - [API dashboard](https://www.foresportia.com/en/api-dashboard.html)
 - [PyPI package](https://pypi.org/project/foresportia/)
-- [GitHub repository](https://github.com/QBarbedienne/foresportia-python)
+- [GitHub repository](https://github.com/Foresportia/foresportia-python)
 
 ## Quick install
 

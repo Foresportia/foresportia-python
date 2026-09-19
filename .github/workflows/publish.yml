@@ -28,7 +28,7 @@ jobs:
 
       - name: Check release tag matches package version
         run: |
-          python -c 'import os; from foresportia import __version__; assert os.environ["GITHUB_REF_NAME"] == "v" + __version__, "Tag/package version mismatch"'
+          python -c 'import os, sys; from foresportia import __version__; tag = os.environ["GITHUB_REF_NAME"]; expected = "v" + __version__; sys.exit(f"Release tag {tag!r} does not match package version {expected!r}" if tag != expected else 0)'
 
       - name: Run SDK tests
         run: python -m pytest -q
