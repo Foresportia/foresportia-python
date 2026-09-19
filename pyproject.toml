@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [
-  { name = "Quentin Barbedienne", email = "contact@foresportia.com" }
+  { name = "Foresportia", email = "contact@foresportia.com" }
 ]
 keywords = ["foresportia", "football", "soccer", "analytics", "api", "sdk"]
 classifiers = [
@@ -43,11 +43,11 @@ ml = [
 
 [project.urls]
 Homepage = "https://www.foresportia.com"
-Documentation = "https://qbarbedienne.github.io/foresportia-python/"
+Documentation = "https://foresportia.github.io/foresportia-python/"
 API = "https://www.foresportia.com/en/developers.html"
 Dashboard = "https://www.foresportia.com/en/api-dashboard.html"
-Repository = "https://github.com/QBarbedienne/foresportia-python"
-Issues = "https://github.com/QBarbedienne/foresportia-python/issues"
+Repository = "https://github.com/Foresportia/foresportia-python"
+Issues = "https://github.com/foresportia/foresportia-python/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
