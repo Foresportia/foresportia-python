@@ -3,6 +3,10 @@
 All notable changes to the Foresportia Python SDK will be documented in this
 file.
 
+## 0.3.3 - 2026-09-19
+
+- Change repo property
+
 ## 0.3.2 - 2026-09-12
 
 - Fixed bulk POST HTTP 429 handling with opt-in retries: POST is never retried
