@@ -1,6 +1,6 @@
 # Foresportia Python SDK
 
-[Documentation](https://qbarbedienne.github.io/foresportia-python/) ·
+[Documentation](https://foresportia.github.io/foresportia-python/) ·
 [API docs](https://www.foresportia.com/api/docs/)
 
 [![PyPI version](https://img.shields.io/pypi/v/foresportia.svg)](https://pypi.org/project/foresportia/)
@@ -309,7 +309,7 @@ endpoint returns it as an error code, it remains available through
 ## Machine learning example
 
 A runnable script is provided in
-[examples/ml_starter_features.py](https://github.com/QBarbedienne/foresportia-python/blob/main/examples/ml_starter_features.py):
+[examples/ml_starter_features.py](https://github.com/foresportia/foresportia-python/blob/main/examples/ml_starter_features.py):
 it fetches upcoming matches, extracts probabilities, markets, and confidence
 into a feature matrix, and optionally fits a small scikit-learn model
 (`pip install "foresportia[ml]"`). Foresportia outputs are model probabilities,
@@ -382,4 +382,4 @@ No translated message is returned. Keep the option unchanged when paginating.
 ## License
 
 MIT. See
-[LICENSE](https://github.com/QBarbedienne/foresportia-python/blob/main/LICENSE).
+[LICENSE](https://github.com/foresportia/foresportia-python/blob/main/LICENSE).
