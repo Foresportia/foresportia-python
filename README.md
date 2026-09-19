@@ -347,8 +347,8 @@ Prefer the typed `list_*` / `get_*` methods for new code.
 - Homepage: https://www.foresportia.com
 - Developer docs (EN): https://www.foresportia.com/en/developers.html
 - API dashboard (EN): https://www.foresportia.com/en/api-dashboard.html
-- Repository: https://github.com/QBarbedienne/foresportia-python
-- Issues: https://github.com/QBarbedienne/foresportia-python/issues
+- Repository: https://github.com/Foresportia/foresportia-python
+- Issues: https://github.com/Foresportia/foresportia-python/issues
 
 ## Disclaimer
 
