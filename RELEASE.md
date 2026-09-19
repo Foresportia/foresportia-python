@@ -10,7 +10,9 @@ For each release, in order:
 2. Add the matching entry to `CHANGELOG.md`.
 3. Commit the changes on `main`.
 4. Install development dependencies and run `python -m pytest -q`.
-5. Build with `python -m build` and run `python -m twine check dist/*`.
+5. Build into a fresh version-specific directory with
+   `python -m build --outdir dist/release-<version>` and run
+   `python -m twine check dist/release-<version>/*`.
 6. Validate the imported package version and the wheel and sdist metadata
    against the intended version. Confirm that version is absent from PyPI and
    the tag is absent from the remote.
